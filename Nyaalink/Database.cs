@@ -33,6 +33,8 @@ public class DownloadQuery
     public uint Id { get; set; }
     public required string Query { get; set; }
     public DateTime? LastFetched { get; set; }
+    
+    public virtual ICollection<DownloadRule> Rules { get; set; }
 }
 
 internal class DownloadContext(DbContextOptions<DownloadContext> options) : DbContext(options)
@@ -49,7 +51,7 @@ internal class DownloadContext(DbContextOptions<DownloadContext> options) : DbCo
             rule.Property(static r => r.Id)
                 .ValueGeneratedOnAdd();
             rule.HasMany<DownloadQuery>(static r => r.Queries)
-                .WithMany();
+                .WithMany(static r => r.Rules);
             rule.HasMany<DownloadRecord>()
                 .WithOne(static r => r.Rule)
                 .HasForeignKey(static r => r.RuleId)

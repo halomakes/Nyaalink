@@ -21,6 +21,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/4442a188f9200a57635373dcd640893c0e8dcc78/src/Http/Http.Extensions/src/RequestDelegateFactory.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/efcore/480480b57cd6e43fe5cab1b552ac0ef917bf3fe8/src/EFCore/Metadata/Internal/ForeignKey.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/c8acea22626efab11c13778c028975acdc34678f/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/List.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/c8acea22626efab11c13778c028975acdc34678f/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/c8acea22626efab11c13778c028975acdc34678f/src/libraries/System.Private.CoreLib/src/System/Text/Encoding.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/c8acea22626efab11c13778c028975acdc34678f/src/libraries/System.Private.CoreLib/src/System/Threading/CancellationTokenRegistration.cs" root0="SKIP_HIGHLIGHTING" />
@@ -155,7 +156,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1738958492866</updated>
-      <workItem from="1738958494429" duration="12665000" />
+      <workItem from="1738958494429" duration="12979000" />
     </task>
     <servers />
   </component>

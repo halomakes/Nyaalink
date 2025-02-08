@@ -21,13 +21,14 @@ internal class FeedConsumer
 
     public async Task IngestAsync(CancellationToken cancellationToken = default)
     {
-        var queries = await _db.Queries.ToListAsync(cancellationToken);
-        var rules = await _db.Rules.ToListAsync(cancellationToken);
+        var queries = await _db.Queries
+            .Include(static q => q.Rules)
+            .ToListAsync(cancellationToken);
         foreach (var query in queries)
         {
             var items = await FetchItemsAsync(query, cancellationToken);
             var downloads = items
-                .Select(i => ApplyRules(i, rules))
+                .Select(i => ApplyRules(i, query.Rules))
                 .Where(i => i.IsT0)
                 .Select(i => i.AsT0)
                 .ToList();
@@ -74,7 +75,7 @@ internal class FeedConsumer
         }
     }
 
-    private static OneOf<DownloadRecord, Ignore> ApplyRules(Item feedItem, IList<DownloadRule> rules)
+    private static OneOf<DownloadRecord, Ignore> ApplyRules(Item feedItem, IEnumerable<DownloadRule> rules)
     {
         var matchingRule = rules.FirstOrDefault(r => r.Matches(feedItem));
         if (matchingRule is null)
