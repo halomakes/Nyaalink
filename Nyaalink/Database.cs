@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Nyaalink;
 
@@ -19,6 +20,7 @@ public class DownloadRule
     public required string Label { get; set; }
     public required string Pattern { get; set; }
     public ulong AniDbId { get; set; }
+    public string? BackfillFilter { get; set; }
 
     public virtual ICollection<DownloadQuery>? Queries { get; set; }
 
@@ -34,6 +36,7 @@ public class DownloadQuery
     public required string Query { get; set; }
     public DateTime? LastFetched { get; set; }
     
+    [JsonIgnore]
     public virtual ICollection<DownloadRule> Rules { get; set; }
 }
 

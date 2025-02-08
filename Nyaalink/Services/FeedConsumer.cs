@@ -25,32 +25,37 @@ internal class FeedConsumer
             .Include(static q => q.Rules)
             .ToListAsync(cancellationToken);
         foreach (var query in queries)
+            await IngestAsync(query, cancellationToken);
+    }
+
+    public async Task IngestAsync(DownloadQuery query, CancellationToken cancellationToken)
+    {
+        if (query.Rules?.Count is not > 0)
+            return;
+        var items = await FetchItemsAsync(query, cancellationToken);
+        var downloads = items
+            .Select(i => ApplyRules(i, query.Rules))
+            .Where(i => i.IsT0)
+            .Select(i => i.AsT0)
+            .ToList();
+        if (downloads is [])
+            return;
+
+        var ids = downloads.Select(static d => d.Id).ToList();
+        var existingIds = _db.Records
+            .Where(r => ids.Contains(r.Id))
+            .Select(static r => r.Id)
+            .ToList();
+        var recordsToCreate = downloads
+            .ExceptBy(existingIds, static d => d.Id)
+            .ToList();
+        _db.Records.AddRange(recordsToCreate);
+        await _db.SaveChangesAsync(cancellationToken);
+
+        foreach (var download in recordsToCreate)
         {
-            var items = await FetchItemsAsync(query, cancellationToken);
-            var downloads = items
-                .Select(i => ApplyRules(i, query.Rules))
-                .Where(i => i.IsT0)
-                .Select(i => i.AsT0)
-                .ToList();
-            if (downloads is [])
-                return;
-
-            var ids = downloads.Select(static d => d.Id).ToList();
-            var existingIds = _db.Records
-                .Where(r => ids.Contains(r.Id))
-                .Select(static r => r.Id)
-                .ToList();
-            var recordsToCreate = downloads
-                .ExceptBy(existingIds, static d => d.Id)
-                .ToList();
-            _db.Records.AddRange(recordsToCreate);
-            await _db.SaveChangesAsync(cancellationToken);
-
-            foreach (var download in recordsToCreate)
-            {
-                _db.Entry(download).State = EntityState.Detached;
-                await _eventChannel.Writer.WriteAsync(download, cancellationToken);
-            }
+            _db.Entry(download).State = EntityState.Detached;
+            await _eventChannel.Writer.WriteAsync(download, cancellationToken);
         }
     }
 

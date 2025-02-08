@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Channels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,8 @@ public static class RuleEndpoints
             .Produces<IList<DownloadRule>>((int)HttpStatusCode.OK);
 
         builder.MapPost("rules",
-                async ([FromServices] DownloadContext db, [FromBody] DownloadRule rule, CancellationToken ct) =>
+                async ([FromServices] DownloadContext db, [FromServices] Channel<RuleCreatedEvent> chan,
+                    [FromBody] DownloadRule rule, CancellationToken ct) =>
                 {
                     var queryIds = rule.Queries?.Select(static q => q.Id).ToList();
                     if (queryIds is not null or [])
@@ -24,6 +26,8 @@ public static class RuleEndpoints
 
                     db.Rules.Add(rule);
                     await db.SaveChangesAsync(ct);
+                    db.Entry(rule).State = EntityState.Detached;
+                    await chan.Writer.WriteAsync(new(rule), ct);
                     return Results.CreatedAtRoute($"GetRule", new { ruleId = rule.Id }, rule);
                 })
             .WithName("CreateRule")

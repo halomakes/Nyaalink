@@ -15,6 +15,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<DownloadContext>(opts =>
     opts.UseSqlite(builder.Configuration.GetConnectionString("Downloads")));
 builder.Services.AddSingleton<Channel<DownloadRecord>>(_ => Channel.CreateUnbounded<DownloadRecord>());
+builder.Services.AddSingleton<Channel<RuleCreatedEvent>>(_ => Channel.CreateUnbounded<RuleCreatedEvent>());
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<FeedConsumer>();
 builder.Services.AddHostedService<FeedScheduler>();
@@ -22,6 +23,7 @@ builder.Services.Configure<QbitConfiguration>(builder.Configuration.GetSection("
 builder.Services.AddScoped<QbitService>();
 builder.Services.AddHostedService<DownloadInitiator>();
 builder.Services.AddHostedService<RetryInitiator>();
+builder.Services.AddHostedService<NewRuleBackfiller>();
 builder.Services.AddScoped(static services =>
 {
     var options = services.GetRequiredService<IOptions<QbitConfiguration>>();
