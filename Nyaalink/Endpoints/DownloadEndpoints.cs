@@ -7,7 +7,7 @@ public static class DownloadEndpoints
 {
     public static void MapDownloadEndpoints(this IEndpointRouteBuilder builder)
     {
-        builder.MapGet("downloads/recent", async ([FromServices] DownloadContext db, CancellationToken ct, [FromQuery] int limit = 100) =>
+        builder.MapGet("api/downloads/recent", async ([FromServices] DownloadContext db, CancellationToken ct, [FromQuery] int limit = 100) =>
         {
             var results = await db.Records
                 .OrderByDescending(static r => r.IngestedAt)

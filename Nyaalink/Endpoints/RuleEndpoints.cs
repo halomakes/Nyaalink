@@ -9,12 +9,12 @@ public static class RuleEndpoints
 {
     public static void MapRuleEndpoints(this IEndpointRouteBuilder builder)
     {
-        builder.MapGet("rules",
+        builder.MapGet("api/rules",
                 async ([FromServices] DownloadContext db, CancellationToken ct) => await db.Rules.ToListAsync(ct))
             .WithName("GetRules")
             .Produces<IList<DownloadRule>>((int)HttpStatusCode.OK);
 
-        builder.MapPost("rules",
+        builder.MapPost("api/rules",
                 async ([FromServices] DownloadContext db, [FromServices] Channel<RuleCreatedEvent> chan,
                     [FromBody] DownloadRule rule, CancellationToken ct) =>
                 {
@@ -34,7 +34,7 @@ public static class RuleEndpoints
             .Produces<DownloadRule>((int)HttpStatusCode.Created)
             .Produces<ProblemDetails>((int)HttpStatusCode.BadRequest);
 
-        builder.MapPut("rules/{ruleId:int}", async ([FromServices] DownloadContext db, [FromRoute] uint ruleId,
+        builder.MapPut("api/rules/{ruleId:int}", async ([FromServices] DownloadContext db, [FromRoute] uint ruleId,
                 [FromBody] DownloadRule rule, CancellationToken ct) =>
             {
                 if (rule.Id != ruleId)
@@ -61,7 +61,7 @@ public static class RuleEndpoints
             .Produces<ProblemDetails>((int)HttpStatusCode.NotFound)
             .Produces<ProblemDetails>((int)HttpStatusCode.BadRequest);
 
-        builder.MapGet("rules/{ruleId:int}",
+        builder.MapGet("api/rules/{ruleId:int}",
                 async ([FromServices] DownloadContext db, [FromRoute] uint ruleId, CancellationToken ct) =>
                 {
                     var existing = await db.Rules
@@ -73,7 +73,7 @@ public static class RuleEndpoints
             .Produces<DownloadRule>((int)HttpStatusCode.OK)
             .Produces<ProblemDetails>((int)HttpStatusCode.NotFound);
 
-        builder.MapDelete("rules/{ruleId:int}",
+        builder.MapDelete("api/rules/{ruleId:int}",
                 async ([FromServices] DownloadContext db, [FromRoute] uint ruleId, CancellationToken ct) =>
                 {
                     var existing = await db.Rules.FindAsync([ruleId], cancellationToken: ct);

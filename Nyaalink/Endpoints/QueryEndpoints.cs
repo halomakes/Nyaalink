@@ -8,12 +8,12 @@ public static class QueryEndpoints
 {
     public static void MapQueryEndpoints(this IEndpointRouteBuilder builder)
     {
-        builder.MapGet("queries",
+        builder.MapGet("api/queries",
                 async ([FromServices] DownloadContext db, CancellationToken ct) => await db.Queries.ToListAsync(ct))
             .WithName("GetQueries")
             .Produces<IList<DownloadQuery>>((int)HttpStatusCode.OK);
 
-        builder.MapPost("queries",
+        builder.MapPost("api/queries",
                 async ([FromServices] DownloadContext db, [FromBody] DownloadQuery query, CancellationToken ct) =>
                 {
                     db.Queries.Add(query);
@@ -24,7 +24,7 @@ public static class QueryEndpoints
             .Produces<DownloadQuery>((int)HttpStatusCode.Created)
             .Produces<ProblemDetails>((int)HttpStatusCode.BadRequest);
 
-        builder.MapPut("queries/{queryId:int}", async ([FromServices] DownloadContext db, [FromRoute] uint queryId,
+        builder.MapPut("api/queries/{queryId:int}", async ([FromServices] DownloadContext db, [FromRoute] uint queryId,
                 [FromBody] DownloadQuery query, CancellationToken ct) =>
             {
                 if (query.Id != queryId)
@@ -42,7 +42,7 @@ public static class QueryEndpoints
             .Produces<ProblemDetails>((int)HttpStatusCode.NotFound)
             .Produces<ProblemDetails>((int)HttpStatusCode.BadRequest);
 
-        builder.MapGet("queries/{queryId:int}",
+        builder.MapGet("api/queries/{queryId:int}",
                 async ([FromServices] DownloadContext db, [FromRoute] uint queryId, CancellationToken ct) =>
                 {
                     var existing = await db.Queries.FindAsync([queryId], cancellationToken: ct);
@@ -52,7 +52,7 @@ public static class QueryEndpoints
             .Produces<DownloadQuery>((int)HttpStatusCode.OK)
             .Produces<ProblemDetails>((int)HttpStatusCode.NotFound);
 
-        builder.MapDelete("queries/{queryId:int}",
+        builder.MapDelete("api/queries/{queryId:int}",
                 async ([FromServices] DownloadContext db, [FromRoute] uint queryId, CancellationToken ct) =>
                 {
                     var existing = await db.Queries
