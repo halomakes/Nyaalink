@@ -79,7 +79,7 @@ public static class RuleEndpoints
                     var existing = await db.Rules.FindAsync([ruleId], cancellationToken: ct);
                     if (existing is null)
                         return Results.NotFound($"Rule {ruleId} not found");
-                    db.Rules.Remove(existing);
+                    existing.IsRemoved = true;
                     await db.SaveChangesAsync(ct);
                     return Results.Ok();
                 })

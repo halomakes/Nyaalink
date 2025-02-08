@@ -21,6 +21,7 @@ public class DownloadRule
     public required string Pattern { get; set; }
     public ulong AniDbId { get; set; }
     public string? BackfillFilter { get; set; }
+    public bool IsRemoved { get; set; }
 
     public virtual ICollection<DownloadQuery>? Queries { get; set; }
 
@@ -59,6 +60,7 @@ internal class DownloadContext(DbContextOptions<DownloadContext> options) : DbCo
                 .WithOne(static r => r.Rule)
                 .HasForeignKey(static r => r.RuleId)
                 .HasPrincipalKey(static r => r.Id);
+            rule.HasQueryFilter(static r => !r.IsRemoved);
         });
 
         modelBuilder.Entity<DownloadQuery>(static query =>
