@@ -21,6 +21,7 @@ builder.Services.AddHostedService<FeedScheduler>();
 builder.Services.Configure<QbitConfiguration>(builder.Configuration.GetSection("Qbit"));
 builder.Services.AddScoped<QbitService>();
 builder.Services.AddHostedService<DownloadInitiator>();
+builder.Services.AddHostedService<RetryInitiator>();
 builder.Services.AddScoped(static services =>
 {
     var options = services.GetRequiredService<IOptions<QbitConfiguration>>();
