@@ -5,17 +5,17 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Nyallink/Nyallink.csproj", "Nyallink/"]
-RUN dotnet restore "Nyallink/Nyallink.csproj"
+COPY ["Nyaalink/Nyaalink.csproj", "Nyaalink/"]
+RUN dotnet restore "Nyaalink/Nyaalink.csproj"
 COPY . .
-WORKDIR "/src/Nyallink"
-RUN dotnet build "Nyallink.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Nyaalink"
+RUN dotnet build "Nyaalink.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Nyallink.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Nyaalink.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Nyallink.dll"]
+ENTRYPOINT ["dotnet", "Nyaalink.dll"]
