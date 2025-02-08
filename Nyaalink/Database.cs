@@ -21,7 +21,7 @@ public class DownloadRule
     public required string Pattern { get; set; }
     public ulong AniDbId { get; set; }
     public string? BackfillFilter { get; set; }
-    public bool IsRemoved { get; set; }
+    [JsonIgnore] public bool IsRemoved { get; set; }
 
     public virtual ICollection<DownloadQuery>? Queries { get; set; }
 
@@ -36,9 +36,9 @@ public class DownloadQuery
     public uint Id { get; set; }
     public required string Query { get; set; }
     public DateTime? LastFetched { get; set; }
-    
-    [JsonIgnore]
-    public virtual ICollection<DownloadRule> Rules { get; set; }
+    [JsonIgnore] public bool IsRemoved { get; set; }
+
+    [JsonIgnore] public virtual ICollection<DownloadRule> Rules { get; set; }
 }
 
 internal class DownloadContext(DbContextOptions<DownloadContext> options) : DbContext(options)
@@ -68,6 +68,7 @@ internal class DownloadContext(DbContextOptions<DownloadContext> options) : DbCo
             query.HasKey(static q => q.Id);
             query.Property(static q => q.Id)
                 .ValueGeneratedOnAdd();
+            query.HasQueryFilter(static q => !q.IsRemoved);
         });
 
         modelBuilder.Entity<DownloadRecord>(static record =>

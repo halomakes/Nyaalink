@@ -156,7 +156,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1738958492866</updated>
-      <workItem from="1738958494429" duration="14988000" />
+      <workItem from="1738958494429" duration="15392000" />
     </task>
     <servers />
   </component>
@@ -168,36 +168,6 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Nyaalink/Services/NewRuleBackfiller.cs</url>
-          <line>23</line>
-          <properties documentPath="C:\Users\Alex\source\repos\Nyallink\Nyaalink\Services\NewRuleBackfiller.cs" containingFunctionPresentation="Method 'ExecuteAsync'">
-            <startOffsets>
-              <option value="1003" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1164" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Nyaalink/Services/FeedConsumer.cs</url>
-          <line>32</line>
-          <properties documentPath="C:\Users\Alex\source\repos\Nyallink\Nyaalink\Services\FeedConsumer.cs" containingFunctionPresentation="Method 'IngestAsync'">
-            <startOffsets>
-              <option value="1002" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1036" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="DotNetProject">
         <watch expression="((Nyaalink.Item) feedItem).Title" />
