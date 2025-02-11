@@ -10,12 +10,14 @@ internal class FeedConsumer
 {
     private readonly DownloadContext _db;
     private readonly Channel<DownloadRecord> _eventChannel;
+    private readonly ILogger<FeedConsumer> _log;
     private readonly HttpClient _httpClient;
 
-    public FeedConsumer(DownloadContext db, IHttpClientFactory clientFactory, Channel<DownloadRecord> eventChannel)
+    public FeedConsumer(DownloadContext db, IHttpClientFactory clientFactory, Channel<DownloadRecord> eventChannel, ILogger<FeedConsumer> log)
     {
         _db = db;
         _eventChannel = eventChannel;
+        _log = log;
         _httpClient = clientFactory.CreateClient();
     }
 
@@ -75,7 +77,7 @@ internal class FeedConsumer
         }
         catch (Exception e)
         {
-            //todo: handle
+            _log.LogError(e, "Unable to fetch feed for {Query}", query);
             return [];
         }
     }

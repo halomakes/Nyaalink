@@ -39,6 +39,10 @@ public class DownloadQuery
     [JsonIgnore] public bool IsRemoved { get; set; }
 
     [JsonIgnore] public virtual ICollection<DownloadRule> Rules { get; set; }
+
+    public override string ToString() => IsRemoved
+        ? $"[X] {Query}"
+        : Query;
 }
 
 internal class DownloadContext(DbContextOptions<DownloadContext> options) : DbContext(options)

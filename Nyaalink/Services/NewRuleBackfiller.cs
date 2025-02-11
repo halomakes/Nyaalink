@@ -7,7 +7,10 @@ namespace Nyaalink.Services;
 /// Performs a more specific search to backfill episodes of a newly-added show that would be too far back to appear in
 /// the normal RSS feed
 /// </summary>
-public class NewRuleBackfiller(Channel<RuleCreatedEvent> channel, IServiceProvider serviceProvider) : BackgroundService
+public class NewRuleBackfiller(
+    Channel<RuleCreatedEvent> channel,
+    IServiceProvider serviceProvider,
+    ILogger<NewRuleBackfiller> log) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -36,7 +39,7 @@ public class NewRuleBackfiller(Channel<RuleCreatedEvent> channel, IServiceProvid
             }
             catch (Exception e)
             {
-                //todo: something idk
+                log.LogError(e, "Unable to backfill new rule");
             }
         }
     }

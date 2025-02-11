@@ -2,7 +2,10 @@
 
 namespace Nyaalink.Services;
 
-public class DownloadInitiator(IServiceProvider serviceProvider, Channel<DownloadRecord> channel) : BackgroundService
+public class DownloadInitiator(
+    IServiceProvider serviceProvider,
+    Channel<DownloadRecord> channel,
+    ILogger<DownloadInitiator> log) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -17,7 +20,7 @@ public class DownloadInitiator(IServiceProvider serviceProvider, Channel<Downloa
             }
             catch (Exception e)
             {
-                //todo: something idk
+                log.LogError(e, "Unable to initiate download");
             }
         }
     }
